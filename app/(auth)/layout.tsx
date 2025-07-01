@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner'
 import '../globals.css'
 
 export const metadata = {
@@ -12,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='w-screen h-screen grid place-content-center'>{children}</body>
+      <body className='w-screen h-screen grid place-content-center'>
+        <Toaster richColors position="bottom-center"/>
+        <main>{children}</main>
+      </body>
     </html>
   )
 }

@@ -12,7 +12,7 @@ function Profile() {
                 <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="flex flex-col -space-y-1">
-                <span className="font-bold">Srdamex</span>
+                <span className="font-bold">Example</span>
                 <span>useremail@example.com</span>
             </div>
         </div>

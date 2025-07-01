@@ -1,17 +1,19 @@
-'use client'
+import VisibleForm from "@/components/auth/VisibleForm";
+import { createClient } from '@/util/supabase/server'
+import { redirect } from "next/navigation";
 
-import Login from "@/components/auth/Login";
-import Register from "@/components/auth/Register";
-import { useState } from "react";
+async function LoginPage() {
 
-function LoginPage() {
+    const supabase = await createClient()
+    const { data : {user} } = await supabase.auth.getUser()
 
-    const [switchForm, setSwitchForm] = useState<'login' | 'register'>('login')
+    //If user logged, redirects to /dashboard
+    if(user){
+        redirect('/dashboard')
+    }
 
     return (
-        <>
-            {switchForm === 'login'? <Login setSwitchRegister={setSwitchForm}/> : <Register setSwitchLogin={setSwitchForm}/>}
-        </>
+        <VisibleForm/>
     )
 }
 

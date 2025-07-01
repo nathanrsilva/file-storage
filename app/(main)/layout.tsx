@@ -1,6 +1,6 @@
 import React from 'react'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from '@/components/app/AppsideBar'
+import { AppSidebar } from '@/components/app/AppSidebar'
 import '../globals.css'
 
 function MainLayout({ children }: { children: React.ReactNode }) {

@@ -33,6 +33,7 @@ function Login({ setSwitchRegister }: { setSwitchRegister: Dispatch<SetStateActi
     }
 
     const handleOnSubmit = async (values: z.infer<typeof loginSchema>) => {
+        
         const result = await login(values)
 
         if(result.status === 'error validation'){

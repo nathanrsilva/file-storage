@@ -17,12 +17,15 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { CldImage } from 'next-cloudinary';
+import { useFolder } from '@/context/FolderContext';
 
-function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetStateAction<Comparision | null>>, }) {
+function UploadImage({folderName}: {folderName?: string}) {
 
     const [state, formAction, isPending] = useActionState(uploadImage, null)
     const [dialogOpen, setDialogOpen] = useState(false)
     const [hasResult, setHasResult] = useState(false)
+
+    const {setFolderState} = useFolder()
 
     useEffect(() => {
 
@@ -38,6 +41,7 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
 
         if(state){
             setHasResult(true)
+            setFolderState(state.resultFolderFiles)
             return
         }
 
@@ -47,12 +51,19 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
         <>
             <DropdownMenuItem onSelect={(e) => { e.preventDefault() }} className='p-0'>
 
-                <label htmlFor='upload-image' className='flex w-full items-center space-x-2  p-2'>
-                    <Image />
+                <label htmlFor='upload-image' className='flex w-full cursor-pointer items-center space-x-2 p-2'>
+                    <Image className='ml-1'/>
                     <span>Image</span>
                 </label>
 
                 <form action={formAction}>
+
+                    <Input
+                    readOnly
+                    hidden
+                    name='folder-name'
+                    value={folderName}
+                    />
 
                     <Input id='upload-image' className='hidden' type='file' name='file' onChange={(e) => {
                         if (!e.target.files?.[0]) return;
@@ -83,7 +94,7 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
                         <div className="mt-5 border rounded-md text-center p-5 space-y-2">
 
                             <div className='w-full h-50 relative'>
-                                <CldImage src={state?.publicId as string} fill alt={'uploaded image'} className='object-contain rounded-sm' />
+                                <CldImage src={state?.folderComparision.publicId as string} fill alt={'uploaded image'} className='object-contain rounded-sm' />
                             </div>
 
                             <div className='flex justify-center space-x-5 font-medium'>
@@ -91,14 +102,14 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
                                 <div 
                                 className='border-1 w-23 space-y-1 p-2 rounded-sm text-white bg-black'
                                 >
-                                    <p className='border-1 text-sm text-rose-300 border-red-200'>{state?.original.size}</p>
+                                    <p className='border-1 text-sm text-rose-300 border-red-200'>{state?.folderComparision.original.size}</p>
                                     <p className='uppercase text-sm font-bold text-rose-300'>Original</p>
                                 </div>
 
                                 <div 
                                 className='border-1 w-23 space-y-1 p-2 rounded-sm text-white bg-black'
                                 >
-                                    <p className='border-1 text-sm text-green-300 border-green-300'>{state?.optimized.size}</p>
+                                    <p className='border-1 text-sm text-green-300 border-green-300'>{state?.folderComparision.optimized.size}</p>
                                     <p className='uppercase text-sm font-bold text-green-300'>Optimized</p>
                                 </div>
 
@@ -121,7 +132,7 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
                                             className="text-green-500"
                                             stroke="currentColor"
                                             strokeWidth="3"
-                                            strokeDasharray={`${state?.saved.percent}, 100`}
+                                            strokeDasharray={`${state?.folderComparision.saved.percent}, 100`}
                                             fill="none"
                                             d="M18 2.0845
                                         a 15.9155 15.9155 0 0 1 0 31.831
@@ -129,7 +140,7 @@ function UploadImage({ onComplete }: { onComplete: React.Dispatch<React.SetState
                                         />
                                     </svg>
                                     <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold">
-                                        {state?.saved.percent}%
+                                        {state?.folderComparision.saved.percent}%
                                     </div>
                                 </div>
                             </div>}

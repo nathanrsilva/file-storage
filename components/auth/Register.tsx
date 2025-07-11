@@ -7,10 +7,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema } from '@/util/loginSchema'
 import { z } from 'zod/v4'
-import { Dispatch, SetStateAction, useActionState, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { signup } from '@/actions/auth'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import AlertMessage from './AlertMessage'
 
 function Register({ setSwitchLogin }: { setSwitchLogin: Dispatch<SetStateAction<"register" | "login">> }) {
@@ -83,7 +82,7 @@ function Register({ setSwitchLogin }: { setSwitchLogin: Dispatch<SetStateAction<
                                 <Button variant={'link'} type='button'></Button>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder='Enter your password' {...field} />
+                                <Input type='password' placeholder='Enter your password' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

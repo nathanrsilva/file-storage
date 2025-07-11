@@ -30,12 +30,6 @@ function SidebarProfile() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent side='top' className="w-3xs">
-                    <DropdownMenuItem className='cursor-pointer'>
-                        <span>Account</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className='cursor-pointer'>
-                        <span>Billing</span>
-                    </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <form action={formAction} className="w-full">
                             <button type="submit" className='w-full text-left'>Sign out</button>

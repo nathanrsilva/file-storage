@@ -1,10 +1,14 @@
+import { getFolders } from '@/actions/folders/folders-actions'
 import FoldersList from '@/components/dashboard/folders-list/FoldersList'
 import React from 'react'
 
-function FoldersPage() {
+async function FoldersPage() {
+
+    const folders = await getFolders()
+
     return (
         <>
-            <FoldersList/>
+            <FoldersList folders={folders}/>
         </>
     )
 }

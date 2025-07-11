@@ -2,16 +2,27 @@
 
 import { cloudinary, streamifier } from "@/lib/cloudinary"
 import fileComparison, { Comparision } from "@/util/fileComparision"
+import { createClient } from "@/util/supabase/server"
+import { FolderType } from "@/util/types/folder.files.types"
+import { getFolderFiles } from "../files/files-actions"
 
-interface CloudinaryUploadResult{
+interface CloudinaryUploadResult {
     public_id: string,
     [key: string]: any,
 }
 
-//Promise<Comparision>
-export async function uploadImage(prevState: any, formData: FormData)  {
+export async function uploadImage(prevState: any, formData: FormData) {
+
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) throw new Error('User not authenticated')
 
     const file = formData.get('file') as File
+    const folderName = formData.get('folder-name') as string
+
+    const initialPath = user.id + '/'
+    const folderToSave = folderName? initialPath + folderName : initialPath + 'All Files'
 
     const buffer = Buffer.from(await file.arrayBuffer())
 
@@ -19,7 +30,7 @@ export async function uploadImage(prevState: any, formData: FormData)  {
 
         const uploadStream = cloudinary.uploader.upload_stream(
             {
-                folder: 'image-uploads',
+                folder: folderToSave,
                 resource_type: 'image',
                 transformation: [
                     {
@@ -43,5 +54,11 @@ export async function uploadImage(prevState: any, formData: FormData)  {
     const optimizedSize = uploadResult.bytes
     const publicId = uploadResult.public_id
 
-    return fileComparison(originalSize, optimizedSize, publicId)
+    const resultFolderFiles = await getFolderFiles(folderName as string, null)
+    
+    return {
+        folderComparision: fileComparison(originalSize, optimizedSize, publicId),
+        resultFolderFiles: resultFolderFiles as FolderType
+    }
+
 }

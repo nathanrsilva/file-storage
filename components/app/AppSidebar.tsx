@@ -4,15 +4,8 @@ import {
     SidebarFooter,
     SidebarHeader,
     SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import SidebarProfile from "./SidebarProfile"
-import FolderCollapsible from "./FolderCollapsible"
-import FolderItem from "./FolderItem"
 
 export function AppSidebar() {
     return (
@@ -24,7 +17,7 @@ export function AppSidebar() {
 
             <SidebarContent className="list-none">
 
-                <FolderCollapsible folderName="Pessoais">
+                {/* <FolderCollapsible folderName="Pessoais">
                     <FolderItem>
                         One
                     </FolderItem>
@@ -43,7 +36,7 @@ export function AppSidebar() {
                     <FolderItem>
                         Three
                     </FolderItem>
-                </FolderCollapsible>
+                </FolderCollapsible> */}
                 
             </SidebarContent>
 

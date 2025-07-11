@@ -2,9 +2,10 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/util/supabase/server'
-import { email, z } from 'zod/v4'
+import { z } from 'zod/v4'
 import { loginSchema } from '@/util/loginSchema'
 import { redirect } from 'next/navigation'
+import { userStorage } from './folders/folders-actions'
 
 export async function login(values: z.infer<typeof loginSchema>) {
     const supabase = await createClient()
@@ -34,6 +35,7 @@ export async function login(values: z.infer<typeof loginSchema>) {
         }
     }
 
+    await userStorage()
     revalidatePath('/dashboard', 'layout')
 
     return {
@@ -45,7 +47,6 @@ export async function login(values: z.infer<typeof loginSchema>) {
 export async function signup(values: z.infer<typeof loginSchema>) {
     const supabase = await createClient()
 
-    //VALIDATE INPUTS
     const result = loginSchema.safeParse(values)
 
     if (!result.success) {
@@ -57,14 +58,13 @@ export async function signup(values: z.infer<typeof loginSchema>) {
         }
     }
 
-    //CHECK IF EMAIL EXISTS
     const data = {
         email: values.email,
         password: values.password,
     }
 
     let { data: custom_user, error } = await supabase
-        .from('custom_user')
+        .from('user')
         .select("*")
         .eq('email', values.email)
 
@@ -75,7 +75,6 @@ export async function signup(values: z.infer<typeof loginSchema>) {
         }
     } else {
 
-        //SIGNUP NEW USER
         const { data: signupData, error: errorSignup } = await supabase.auth.signUp(data)
 
         if (errorSignup) {
@@ -105,6 +104,6 @@ export async function logout(prevState: any) {
   }
 
   revalidatePath('/dashboard', 'layout')
-
   redirect('/login')
+
 }

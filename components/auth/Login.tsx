@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -84,7 +83,7 @@ function Login({ setSwitchRegister }: { setSwitchRegister: Dispatch<SetStateActi
                                 <Button variant='link' type="button" className="cursor-pointer">Forgot your Password?</Button>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder='Enter your password' {...field} />
+                                <Input type='password' placeholder='Enter your password' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
